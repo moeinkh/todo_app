@@ -1,1 +1,6 @@
 todo_app/
+
+static/
+staticfiles/
+
+db.sqlite3
