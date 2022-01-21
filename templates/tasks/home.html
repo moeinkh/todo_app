@@ -35,21 +35,24 @@
                     <tr>
                             <td>{{ task.title }}</td>
                             <td>
-                                {% if task %}
-                                    فعال
+                                {% if task.active %}
+                                   <span class="badge bg-success text-light">فعال</span> 
                                 {% else %}
-                                    غیرفعال
+                                    <span class="badge bg-warning">غیرفعال</span> 
                                 {% endif %}
                             </td>
                             <td>{{ task.created }}</td>
                             <td>
-                                <button class="active_button">
+                                <form method="post" action="{% url 'task:active_task' id=task.id %}">
+                                    {% csrf_token %}
                                     {% if task.active %}
-                                        غیر فعال کردن
+                                        <input type="hidden" name="active">
+                                        <button type="submit" class="active_button">غیرفعال کردن</button> 
                                     {% else %}
-                                        فعال کردن
+                                        <input type="hidden" name="active">
+                                        <button type="submit" class="not_active_button">فعال کردن</button>  
                                     {% endif %}
-                                </button>
+                                </form>
                             </td>
                             <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
                     </tr>
