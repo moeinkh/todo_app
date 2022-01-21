@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Task
 from .forms import TaskForm
 from django.http import HttpResponseRedirect
@@ -17,3 +17,8 @@ def home(request):
             'tasks': tasks,
             'form': form,
             })
+
+def delete_task(request, id):
+    deleted = Task.objects.get(pk=id)
+    deleted.delete()
+    return redirect('task:home')    

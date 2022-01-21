@@ -29,6 +29,7 @@
                     <th>وضعیت</th>
                     <th>تاریخ ایجاد</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 {% for task in tasks %}
                     <tr>
@@ -41,7 +42,16 @@
                                 {% endif %}
                             </td>
                             <td>{{ task.created }}</td>
-                            <td>X</td>
+                            <td>
+                                <button class="active_button">
+                                    {% if task.active %}
+                                        غیر فعال کردن
+                                    {% else %}
+                                        فعال کردن
+                                    {% endif %}
+                                </button>
+                            </td>
+                            <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
                     </tr>
                 {% endfor %}
             </table>
