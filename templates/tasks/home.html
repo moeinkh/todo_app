@@ -32,11 +32,37 @@
                     <th></th>
                 </tr>
                 {% for task in tasks %}
-                    <tr>
+                    {% if task.active %}
+                        <tr>
+                                <td>{{ task.title }}</td>
+                                <td>
+                                    {% if task.active %}
+                                    <span class="badge bg-success text-light">فعال</span> 
+                                    {% else %}
+                                        <span class="badge bg-warning">غیرفعال</span> 
+                                    {% endif %}
+                                </td>
+                                <td>{{ task.created }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'task:active_task' id=task.id %}">
+                                        {% csrf_token %}
+                                        {% if task.active %}
+                                            <input type="hidden" name="active">
+                                            <button type="submit" class="active_button">غیرفعال کردن</button> 
+                                        {% else %}
+                                            <input type="hidden" name="active">
+                                            <button type="submit" class="not_active_button">فعال کردن</button>  
+                                        {% endif %}
+                                    </form>
+                                </td>
+                                <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
+                        </tr>
+                    {% else %}
+                        <tr class="back_dark">
                             <td>{{ task.title }}</td>
                             <td>
                                 {% if task.active %}
-                                   <span class="badge bg-success text-light">فعال</span> 
+                                <span class="badge bg-success text-light">فعال</span> 
                                 {% else %}
                                     <span class="badge bg-warning">غیرفعال</span> 
                                 {% endif %}
@@ -55,7 +81,8 @@
                                 </form>
                             </td>
                             <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
-                    </tr>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </table>
         </div>
