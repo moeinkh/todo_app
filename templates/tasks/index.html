@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'tasks/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'tasks/css/bootstrap.min.css' %}">
+    <title>Todo App</title>
+</head>
+<body>
+    <header>
+        <div class="container nav_head">
+            <ul>
+                <li><a href="{% url 'task:home' %}">خانه</a></li>
+            </ul>
+        </div>
+        <div class="container nav_login">
+            <ul>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">خروج</a></li>
+                {% else %}  
+                    <li><a href="{% url 'login' %}">ورود</a></li>
+                    <li><a href="{% url 'sign_up' %}">ثبت نام</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+
+    {% block content %}
+
+    {% endblock content %}
+    
+    <footer>
+        <p>footer</p>
+    </footer>
+    <script src="{% static 'tasks/js/main.js' %}"></script>
+    <script src="{% static 'tasks/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

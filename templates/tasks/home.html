@@ -1,39 +1,53 @@
+{% extends "tasks/index.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'tasks/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'tasks/css/bootstrap.min.css' %}">
-    <title>Todo App</title>
-</head>
-<body>
-    <header>
-        <p>header</p>
-    </header>
-    <section>
-        <div class="container my-2">
-            <div class="my-3 task_form">
-                <h2>ثبت وظایف روزانه</h2>
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <input type="text" name=title placeholder="عنوان کار ...">
-                    <button type="submit">ثبت</button>
-                </form>
-            </div>
-            <table>
-                <tr>
-                    <th>عنوان</th>
-                    <th>وضعیت</th>
-                    <th>تاریخ ایجاد</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                {% for task in tasks %}
-                    {% if task.active %}
-                        <tr>
+
+    {% block content %}
+        <section>
+            <div class="container my-2">
+                <div class="my-3 task_form">
+                    <h2>ثبت وظایف روزانه</h2>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <input type="text" name=title placeholder="عنوان کار ...">
+                        <button type="submit">ثبت</button>
+                    </form>
+                </div>
+                <table>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>وضعیت</th>
+                        <th>تاریخ ایجاد</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for task in tasks %}
+                        {% if task.active %}
+                            <tr>
+                                    <td>{{ task.title }}</td>
+                                    <td>
+                                        {% if task.active %}
+                                        <span class="badge bg-success text-light">فعال</span> 
+                                        {% else %}
+                                            <span class="badge bg-warning">غیرفعال</span> 
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ task.created }}</td>
+                                    <td>
+                                        <form method="post" action="{% url 'task:active_task' id=task.id %}">
+                                            {% csrf_token %}
+                                            {% if task.active %}
+                                                <input type="hidden" name="active">
+                                                <button type="submit" class="active_button">غیرفعال کردن</button> 
+                                            {% else %}
+                                                <input type="hidden" name="active">
+                                                <button type="submit" class="not_active_button">فعال کردن</button>  
+                                            {% endif %}
+                                        </form>
+                                    </td>
+                                    <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
+                            </tr>
+                        {% else %}
+                            <tr class="back_dark">
                                 <td>{{ task.title }}</td>
                                 <td>
                                     {% if task.active %}
@@ -56,41 +70,10 @@
                                     </form>
                                 </td>
                                 <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
-                        </tr>
-                    {% else %}
-                        <tr class="back_dark">
-                            <td>{{ task.title }}</td>
-                            <td>
-                                {% if task.active %}
-                                <span class="badge bg-success text-light">فعال</span> 
-                                {% else %}
-                                    <span class="badge bg-warning">غیرفعال</span> 
-                                {% endif %}
-                            </td>
-                            <td>{{ task.created }}</td>
-                            <td>
-                                <form method="post" action="{% url 'task:active_task' id=task.id %}">
-                                    {% csrf_token %}
-                                    {% if task.active %}
-                                        <input type="hidden" name="active">
-                                        <button type="submit" class="active_button">غیرفعال کردن</button> 
-                                    {% else %}
-                                        <input type="hidden" name="active">
-                                        <button type="submit" class="not_active_button">فعال کردن</button>  
-                                    {% endif %}
-                                </form>
-                            </td>
-                            <td><a href="{% url 'task:delete_task' id=task.id %}"><button class="delete_button">حذف کردن</button></a></td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        </div>
-    </section>
-    <footer>
-        <p>footer</p>
-    </footer>
-    <script src="{% static 'tasks/js/main.js' %}"></script>
-    <script src="{% static 'tasks/js/bootstrap.min.js' %}"></script>
-</body>
-</html>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+    {% endblock content %}

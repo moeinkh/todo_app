@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Task
 from .forms import TaskForm, ActiveForm
-from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # Create your views here.
 def home(request):
@@ -10,13 +10,13 @@ def home(request):
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('')
-    else: 
+            return redirect(reverse('task:home'))   
+    else:
         form = TaskForm()       
-        return render(request, 'tasks/home.html', {
-            'tasks': tasks,
-            'form': form,
-            })
+    return render(request, 'tasks/home.html', {
+        'tasks': tasks,
+        'form': form,
+        })
 
 def delete_task(request, id):
     deleted = Task.objects.get(pk=id)
