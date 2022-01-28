@@ -14,6 +14,7 @@
                 </div>
                 <table>
                     <tr>
+                        <th>ردیف</th>
                         <th>عنوان</th>
                         <th>وضعیت</th>
                         <th>تاریخ ایجاد</th>
@@ -23,6 +24,7 @@
                     {% for task in tasks %}
                         {% if task.active %}
                             <tr>
+                                    <td>{{ forloop.counter }}</td>
                                     <td>{{ task.title }}</td>
                                     <td>
                                         {% if task.active %}
@@ -48,6 +50,7 @@
                             </tr>
                         {% else %}
                             <tr class="back_dark">
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ task.title }}</td>
                                 <td>
                                     {% if task.active %}
