@@ -5,11 +5,14 @@ from django.urls import reverse
 
 # Create your views here.
 def home(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(user=request.user.id)
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            task = Task()
+            task.title = form.cleaned_data['title']
+            task.user = request.user
+            task.save()
             return redirect(reverse('task:home'))   
     else:
         form = TaskForm()       
