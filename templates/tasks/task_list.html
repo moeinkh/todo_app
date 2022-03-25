@@ -1,0 +1,65 @@
+<table id="tasklist">
+    <tr>
+        <th>ردیف</th>
+        <th>عنوان</th>
+        <th>وضعیت</th>
+        <th>تاریخ ایجاد</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for task in tasks %}
+        {% if task.active %}
+            <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ task.title }}</td>
+                    <td>
+                        {% if task.active %}
+                        <span class="badge bg-success text-light">فعال</span> 
+                        {% else %}
+                            <span class="badge bg-warning">غیرفعال</span> 
+                        {% endif %}
+                    </td>
+                    <td>{{ task.created }}</td>
+                    <td>
+                        <form method="post" id="update-from" data-url="{% url 'task:active_task' id=task.id %}" data-id="{{ task.id }}">
+                            {% csrf_token %}
+                            <input type="hidden" id="input_active" name="task_id" value="{{ task.id }}">
+                            <button type="submit" id="update-button" class="not_active_button">غیرفعال کردن</button>  
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" id="delete_form" data-url="{% url 'task:delete_task' id=task.id %}" data-id="{{ task.id }}">
+                            {% csrf_token %}
+                            <button type="submit" id="delete_button" class="delete_button">حذف کردن</button>
+                        </form>
+                    </td>
+            </tr>
+        {% else %}
+            <tr class="back_dark">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ task.title }}</td>
+                <td>
+                    {% if task.active %}
+                    <span class="badge bg-success text-light">فعال</span> 
+                    {% else %}
+                        <span class="badge bg-warning">غیرفعال</span> 
+                    {% endif %}
+                </td>
+                <td>{{ task.created }}</td>
+                <td>
+                    <form method="post" id="update-from" data-url="{% url 'task:active_task' id=task.id %}" data-id="{{ task.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" id="input_active" name="task_id" value="{{ task.id }}">
+                        <button type="submit" id="update-button" class="not_active_button">فعال کردن</button>  
+                    </form>
+                </td>
+                <td>
+                    <form method="post" id="delete_form" data-url="{% url 'task:delete_task' id=task.id %}" data-id="{{ task.id }}">
+                        {% csrf_token %}
+                        <button type="submit" id="delete_button" class="delete_button">حذف کردن</button>
+                    </form>
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
