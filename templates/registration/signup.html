@@ -1,8 +1,8 @@
 {% extends "tasks/index.html" %}
 
 {% block content %}
-    <section>
-        <div class="container">
+    <section class="container">
+        <div class="mt-4 d-flex justify-content-center content text-info row">
             {% if form.errors %}
                 <p style="color: red;">{{ form.errors }}</p>
             {% endif %}
@@ -10,25 +10,25 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="row my-2">
-                    <div class="col-6">
+                    <div class="col-md-12 my-2">
                         <label for="username">نام کاربری:</label>
-                        <input class="form-control" type="text" name='username' id="username">
+                        <input class="input-form" type="text" name='username' id="username">
                     </div> 
-                    <div class="col-6"> 
+                    <div class="col-md-12 my-2"> 
                         <label for="email">ایمیل:</label>
-                        <input class="form-control" type="email" name='email'>
+                        <input class="input-form" type="email" name='email'>
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-12 my-2">
                         <label for="password1">گذرواژه:</label>
-                        <input class="form-control" type="password" name='password1' id="password1">
+                        <input class="input-form" type="password" name='password1' id="password1">
                     </div> 
-                    <div class="col-6"> 
+                    <div class="col-md-12 my-2"> 
                         <label for="password2">تایید گذرواژه:</label>
-                        <input class="form-control" type="password" name='password2'>
+                        <input class="input-form" type="password" name='password2'>
                     </div>
                 </div>
 
-                <input type="submit" class="my-2 btn btn-success" value="ثبت نام">
+                <input type="submit" class="my-2 submit" value="ثبت نام">
             </form>
         </div>
     </section>

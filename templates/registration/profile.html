@@ -1,8 +1,8 @@
 {% extends "tasks/index.html" %}
 
 {% block content %}
-    <section>
-        <div class="container my-2">
+    <section class="container">
+        <div class="mt-4 d-flex justify-content-center content text-info row my-2">
             <ul>
                 <li>نام کاربری: <span>{{ user.username }}</span></li>
                 <li>اسم کامل(در صورت ثبت): <span>{{ user.get_full_name }}</span></li>
@@ -10,7 +10,7 @@
                 <li>تعداد کار های ثبت شده: <span>{{ count_tasks }}</span></li>
                 <li>تعداد کار های انجام نشده: <span>{{ count_active }}</span></li>
             </ul>
-            <a class="btn btn-primary" href="{% url 'password_change' %}">تغییر گذرواژه</a>
+            <a class="btn btn-info" href="{% url 'password_change' %}">تغییر گذرواژه</a>
         </div>
     </section>
 {% endblock content %}

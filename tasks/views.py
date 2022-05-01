@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Task
 from .forms import TaskForm, ActiveForm
 from django.urls import reverse
+from django.core import serializers
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -36,36 +37,27 @@ def taskajax(request):
             
 
 def delete_task(request, id):
-    tasks = Task.objects.filter(user=request.user.id)
-    data = {}
-    if request.method == 'POST':
-        deleted = Task.objects.get(pk=id)
-        deleted.delete()
-        context = {
-            'tasks': tasks
-        }
-        data = {'rendered_table_delete': render_to_string('tasks/task_list.html', context, request=request)}
-        return JsonResponse(data)
-    return JsonResponse(data)
+    tasks = Task.objects.get(id=id)
+    tasks.delete()
+    return redirect('/')
 
 def active_task(request, id):
     tasks = Task.objects.filter(user=request.user.id)
     data = {}
     if request.method == 'POST':
-        # form = ActiveForm(request.POST)
-        for ts in Task.objects.filter(user=request.user.id, id=id):
+        for ts in tasks.filter(id=id):
             if ts.active:
                 ts.active = False
             else:
                 ts.active = True
             ts.save()
-            context = {
-                'tasks': tasks
-            }
-            data = {'rendered_table_active': render_to_string('tasks/active_form.html', context, request=request)}
-            return JsonResponse(data)
-        else:
-            return JsonResponse({ 'error': 'form.errors' }, status=400) 
+        context = {
+            'tasks': tasks
+        }
+        data = {'rendered_table_active': render_to_string('tasks/active_form.html', context, request=request)}
+        return JsonResponse(data)
+    else:
+        return JsonResponse({ 'error': 'form.errors' }, status=400) 
     return JsonResponse(data)
 
 
