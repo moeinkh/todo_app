@@ -9,16 +9,7 @@ from django.template.loader import render_to_string
 
 # Create your views here.
 def home(request):
-    tasks = Task.objects.filter(user=request.user.id)
-    form = TaskForm()       
-    return render(request, 'tasks/home.html', {
-        'tasks': tasks,
-        'form': form,
-        })
-
-def taskajax(request):
-    tasks = Task.objects.filter(user=request.user.id)
-    data ={}
+    tasks = Task.objects.filter(user=request.user.id).order_by('-created')
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -32,33 +23,24 @@ def taskajax(request):
             data = {'rendered_table': render_to_string('tasks/task_list.html', context, request=request)}
             return JsonResponse(data)
         else:
-            return JsonResponse({ 'error': form.errors }, status=400)       
-    return JsonResponse(data)       
-            
+            return JsonResponse({'error': form.errors }, status=400) 
+    else:
+        form = TaskForm()  
+        return render(request, 'tasks/home.html', {
+            'tasks': tasks,
+            'form': form,
+        })
 
 def delete_task(request, id):
-    tasks = Task.objects.get(id=id)
-    tasks.delete()
+    task = Task.objects.get(id=id)
+    task.delete()
     return redirect('/')
 
 def active_task(request, id):
-    tasks = Task.objects.filter(user=request.user.id)
-    data = {}
-    if request.method == 'POST':
-        for ts in tasks.filter(id=id):
-            if ts.active:
-                ts.active = False
-            else:
-                ts.active = True
-            ts.save()
-        context = {
-            'tasks': tasks
-        }
-        data = {'rendered_table_active': render_to_string('tasks/active_form.html', context, request=request)}
-        return JsonResponse(data)
-    else:
-        return JsonResponse({ 'error': 'form.errors' }, status=400) 
-    return JsonResponse(data)
-
+    task = Task.objects.get(id=id)
+    task.active = False
+    print(task)
+    task.save()
+    return redirect('/')
 
 
